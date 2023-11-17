@@ -22,28 +22,53 @@
     const coneGeometry = new THREE.ConeGeometry(5, 10, 16);
     const coneMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
     const cone = new THREE.Mesh(coneGeometry, coneMaterial);
+    cone.position.set(-10, 0, 0); // Початкова позиція конуса
+    let coneDirection = new THREE.Vector3(Math.random(), Math.random(), Math.random()).normalize();
+    const coneSpeedMultiplier = 0.1; // Множник швидкості для конуса
 
     // Куб
     const cubeGeometry = new THREE.BoxGeometry(5, 5, 5);
     const cubeMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true });
     const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+    cube.position.set(10, 0, 0); // Початкова позиція куба
+    let cubeDirection = new THREE.Vector3(Math.random(), Math.random(), Math.random()).normalize();
+    const cubeSpeedMultiplier = 0.1; // Множник швидкості для куба
 
-    // Розташовуємо об'єкти у сцені
+    // Додаємо об'єкти у сцену
     scene.add(cone);
     scene.add(cube);
 
     // Розташовуємо камеру
-    camera.position.z = 15;
+    camera.position.z = 20;
 
     // Анімація
     const animate = function () {
       requestAnimationFrame(animate);
 
-      cone.rotation.x += 0.01;
-      cone.rotation.y += 0.01;
+      // Оновлюємо позиції фігур з врахуванням множника швидкості
+      cone.position.addScaledVector(coneDirection, coneSpeedMultiplier);
+      cube.position.addScaledVector(cubeDirection, cubeSpeedMultiplier);
 
-      cube.rotation.x += 0.01;
-      cube.rotation.y += 0.01;
+      // Змінюємо напрямок руху, якщо фігура досягає межі екрана
+      if (Math.abs(cone.position.x) > 15) {
+        coneDirection.setX(-coneDirection.x);
+      }
+      if (Math.abs(cone.position.y) > 15) {
+        coneDirection.setY(-coneDirection.y);
+      }
+      if (Math.abs(cone.position.z) > 15) {
+        coneDirection.setZ(-coneDirection.z);
+      }
+
+      if (Math.abs(cube.position.x) > 15) {
+        cubeDirection.setX(-cubeDirection.x);
+      }
+      if (Math.abs(cube.position.y) > 15) {
+        cubeDirection.setY(-cubeDirection.y);
+      }
+      if (Math.abs(cube.position.z) > 15) {
+        cubeDirection.setZ(-cubeDirection.z);
+      }
 
       renderer.render(scene, camera);
     };
