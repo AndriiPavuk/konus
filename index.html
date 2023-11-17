@@ -4,41 +4,55 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script type="module" src="https://threejs.org/build/three.module.js"></script>
-  <script type="module">
-    import * as THREE from 'https://threejs.org/build/three.module.js';
-
-    function createCone() {
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-
-      const renderer = new THREE.WebGLRenderer();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      document.body.appendChild(renderer.domElement);
-
-      const geometry = new THREE.ConeGeometry(5, 10, 16);
-      const material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
-      const cone = new THREE.Mesh(geometry, material);
-
-      scene.add(cone);
-
-      camera.position.z = 15;
-
-      const animate = function () {
-        requestAnimationFrame(animate);
-
-        cone.rotation.x += 0.01;
-        cone.rotation.y += 0.01;
-
-        renderer.render(scene, camera);
-      };
-
-      animate();
-    }
-
-    createCone();
-  </script>
-  
 </head>
 <body>
+
+<script type="module">
+  import * as THREE from 'https://threejs.org/build/three.module.js';
+
+  function createScene() {
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // Конус
+    const coneGeometry = new THREE.ConeGeometry(5, 10, 16);
+    const coneMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
+    const cone = new THREE.Mesh(coneGeometry, coneMaterial);
+
+    // Куб
+    const cubeGeometry = new THREE.BoxGeometry(5, 5, 5);
+    const cubeMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true });
+    const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+
+    // Розташовуємо об'єкти у сцені
+    scene.add(cone);
+    scene.add(cube);
+
+    // Розташовуємо камеру
+    camera.position.z = 15;
+
+    // Анімація
+    const animate = function () {
+      requestAnimationFrame(animate);
+
+      cone.rotation.x += 0.01;
+      cone.rotation.y += 0.01;
+
+      cube.rotation.x += 0.01;
+      cube.rotation.y += 0.01;
+
+      renderer.render(scene, camera);
+    };
+
+    animate();
+  }
+
+  createScene();
+</script>
+
 </body>
 </html>
